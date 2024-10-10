@@ -1,31 +1,34 @@
-import Adoption from "../dao/Adoption.js";
+import Adoptions from "../dao/Adoptions.dao.js"; // Asegúrate de tener un DAO para adopciones
+import { generateAdoptionsMock } from "../mocks/adoption.mock.js";
 
 export class AdoptionServices {
   constructor() {
-    this.adoptionDao = new Adoption();
+    this.adoptionDao = new Adoptions();
   }
+
   async getAll() {
-    const adoptions = await this.adoptionDao.get();
-    return adoptions;
+    return await this.adoptionDao.get();
   }
+
   async getById(id) {
-    const adoption = await this.adoptionDao.getBy(id);
-    if (!adoption) throw customError.notFoundError(`Adoption id ${id} not found`);
-    return adoption;
+    return await this.adoptionDao.getBy({ _id: id });
   }
 
   async create(data) {
-    const adoption = await this.adoptionDao.save(data);
-    return adoption;
+    return await this.adoptionDao.save(data);
   }
 
   async update(id, data) {
-    const adoption = await this.adoptionDao.update(id, data);
-    return adoption;
+    return await this.adoptionDao.update(id, data);
   }
 
   async remove(id) {
     await this.adoptionDao.delete(id);
-    return "ok";
+    return "Adoption Deleted";
+  }
+
+  async createMocks() {
+    const adoptions = generateAdoptionsMock(10);
+    return await this.adoptionDao.saveMany(adoptions);
   }
 }
