@@ -9,28 +9,34 @@ const petsServices = new PetServices();
 const router = Router();
 
 router.get("/mockingpets", async (req, res) => {
-  const users = generatePetsMock(100);
+  const pets = generatePetsMock(100);
   const response = await petsServices.createMany(pets);
-  res.status(201).json({ status: "success", payload: response });
+  res.status(201).json({ status: "ok", payload: response });
 });
 
-router.get("/mockingusers", async (req, res) => {
-  const users = generateUsersMock(50);
-  const response = await userServices.crateMany(users);
+router.get("/mockingusers", async (req, res, next) => {
+  try {
+    const users = generateUsersMock(50);
+    const response = await userServices.createMany(users);
 
-  res.status(201).json({ status: "success", payload: response });
+    res.status(201).json({ status: "ok", payload: response });
+  } catch (error) {
+    error.path = "[GET] api/mocks/mockingusers";
+    next(error);
+  }
 });
 
 router.get("/generateData/:cu/:cp", async (req, res) => {
   const { cu, cp } = req.params;
-  const users = generateUsersMock(cu);
-  const pets = generatePetsMock(cp);
-  const userResponse = await userServices.createMany(users);
+
+  const users = await generateUsersMock(Number(cu));
+  const pets = generatePetsMock(Number(cp));
+  const usersResponse = await userServices.createMany(users);
   const petsResponse = await petsServices.createMany(pets);
 
   res
     .status(201)
-    .json({ status: success, payload: { userResponse, petsResponse } });
+    .json({ status: "ok", payload: { usersResponse, petsResponse } });
 });
 
 export default router;

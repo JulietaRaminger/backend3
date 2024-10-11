@@ -10,12 +10,6 @@ export class CustomError {
       error.status = 401;
       return error;
     }
-  
-    badRequestError(message = "Bad Request") {
-      const error = new Error(message);
-      error.status = 400;
-      return error;
-    }
   }
   
   export const customError = new CustomError();
