@@ -1,0 +1,23 @@
+paths:
+  /api/users/{uid}:
+    delete:
+      summary: delete users
+      description: delete one or more users.
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: uid
+          schema:
+            type: string
+          required: true
+          description: ID of the user
+      responses:
+        "201":
+          description: Users delete successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"

@@ -1,0 +1,59 @@
+paths:
+  /api/users/{uid}:
+    put:
+      summary: update users
+      description: update one or more users.
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: uid
+          schema:
+            type: string
+          required: true
+          description: ID of the user
+      requestBody:
+        required: true
+        description: User object that needs to be update.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updateUser"
+      responses:
+        "201":
+          description: Users update successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+
+                  components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The user id (ObjectId as string)
+        first_name:
+          type: string
+          description: The user first name
+        last_name:
+          type: string
+          description: The user last name
+        email:
+          type: string
+          description: The user email
+        password:
+          type: string
+          description: The user password
+        role:
+          type: string
+          description: The user role
+      example:
+        _id: "5f9c5b9c9c5b9c9c5b9c9c5b"
+        first_name: "John"
+        last_name: "Doe"
+        email: "8G2ZU@example.com"

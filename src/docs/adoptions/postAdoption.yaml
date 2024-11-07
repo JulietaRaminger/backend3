@@ -1,0 +1,118 @@
+paths:
+  /api/adoptions/{uid}/{pid}:
+    post:
+      summary: Create an adoption
+      description: Creates an adoption between a user and a pet.
+      tags:
+        - Adoptions
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: ID del usuario que adopta
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: ID de la mascota a adoptar
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                adoptionDate:
+                  type: string
+                  format: date-time
+                  example: "2024-10-25T10:30:00Z"
+      responses:
+        "201":
+          description: Adoption created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  adoption:
+                    type: object
+                    properties:
+                      adoptionId:
+                        type: string
+                      adoptionDate:
+                        type: string
+                        format: date
+                        example: "2024-10-25"
+                      adopter:
+                        type: object
+                        properties:
+                          adopterId:
+                            type: string
+                          fullName:
+                            type: string
+                            example: "John Doe"
+                          email:
+                            type: string
+                            example: "johndoe@example.com"
+                          role:
+                            type: string
+                            example: "user"
+                      pet:
+                        type: object
+                        properties:
+                          petId:
+                            type: string
+                          name:
+                            type: string
+                            example: "Firulais"
+                          species:
+                            type: string
+                            example: "Dog"
+                          birthDate:
+                            type: string
+                            format: date
+                            example: "2020-05-15"
+        "400":
+          description: Adoption already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "error"
+                  message:
+                    type: string
+                    example: "Adoption already exists"
+        "404":
+          description: Adoption not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "error"
+                  message:
+                    type: string
+                    example: "Adoption not found"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "error"
+                  error:
+                    type: string

@@ -1,4 +1,4 @@
-import Adoptions from "../dao/Adoptions.dao.js"; // Asegúrate de tener un DAO para adopciones
+import Adoptions from "../dao/Adoptions.dao.js";
 import { generateAdoptionsMock } from "../mocks/adoption.mock.js";
 
 export class AdoptionServices {
@@ -22,7 +22,7 @@ export class AdoptionServices {
     return await this.adoptionDao.update(id, data);
   }
 
-  async remove(id) {
+  async delete(id) {
     await this.adoptionDao.delete(id);
     return "Adoption Deleted";
   }

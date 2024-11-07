@@ -1,0 +1,45 @@
+paths:
+  /api/users:
+    get:
+      summary: Get users
+      description: Get users
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Get users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+
+                  components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The user id (ObjectId as string)
+        first_name:
+          type: string
+          description: The user first name
+        last_name:
+          type: string
+          description: The user last name
+        email:
+          type: string
+          description: The user email
+        password:
+          type: string
+          description: The user password
+        role:
+          type: string
+          description: The user role
+      example:
+        _id: "5f9c5b9c9c5b9c9c5b9c9c5b"
+        first_name: "John"
+        last_name: "Doe"
+        email: "8G2ZU@example.com"

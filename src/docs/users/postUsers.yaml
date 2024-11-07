@@ -1,0 +1,68 @@
+paths:
+  /api/users:
+    post:
+      summary: Create users
+      description: Create one or more users.
+      tags:
+        - Users
+      requestBody:
+        required: true
+        description: User object that needs to be created.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUser"
+      responses:
+        "201":
+          description: Users created successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "400":
+          description: Invalid input data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "error"
+                  message:
+                    type: string
+                    example: "Invalid input data."
+
+components:
+  schemas:
+    CreateUser:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The user ID (ObjectId as string)
+          example: "5f9c5b9c9c5b9c9c5b9c9c5b"
+        first_name:
+          type: string
+          description: The user's first name
+          example: "John"
+        last_name:
+          type: string
+          description: The user's last name
+          example: "Doe"
+        email:
+          type: string
+          format: email
+          description: The user's email
+          example: "john.doe@example.com"
+        role:
+          type: string
+          description: The user's role
+          example: "user"
+
+        password:
+          type: string
+          description: The user's password
+          example: "123456"

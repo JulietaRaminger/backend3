@@ -11,14 +11,13 @@ export class UserControllers {
     res.status(201).json({ status: "success", users });
   };
 
-  getAllUsers = async (req, res, next) => {
+  getAllUsers = async (req, res) => {
     try {
       const users = await this.userServices.getAll();
-      throw new Error("Nuestro error");
-
       res.send({ status: "success", payload: users });
     } catch (error) {
-      next(error);
+      console.error("Error getting users:", error);
+      res.status(500).json({ status: "error", error: error.message });
     }
   };
 
@@ -32,6 +31,15 @@ export class UserControllers {
       console.log(`Error: ${error.message}`);
 
       next(error);
+    }
+  };
+
+  createUser = async (req, res) => {
+    try {
+      const newUser = await this.userServices.create(req.body);
+      res.status(201).json(newUser);
+    } catch (error) {
+      res.status(400).json({ status: "error", message: error.message });
     }
   };
 
@@ -63,9 +71,14 @@ export class UserControllers {
           .send({ status: "error", message: "User not found" });
       res.send({ status: "success", message: "User deleted" });
     } catch (error) {
+      console.error("Error deleting user:", error);
       res
         .status(500)
-        .send({ status: "error", message: "Error deleting user", error });
+        .send({
+          status: "error",
+          message: "Error deleting user",
+          error: error.message,
+        });
     }
   };
 }

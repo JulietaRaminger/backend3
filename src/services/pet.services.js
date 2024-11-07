@@ -18,7 +18,7 @@ export class PetServices {
     return pet;
   }
 
-  async crateMany(data) {
+  async createMany(data) {
     const pets = await this.petDao.saveMany(data);
 
     return pets;
@@ -28,18 +28,21 @@ export class PetServices {
     const pet = await this.petDao.update(id, data);
     return pet;
   }
-  async remove(id) {
-    await this.petDao.delete(id);
+  async delete(id) {
+    const deletedPet = await this.petDao.delete(id);
+    if (!deletedPet) {
+      throw new Error("No pet found with the given id.");
+    }
     return "Pet Deleted";
   }
   async createMocks() {
     try {
-      const pets = generatePetsMock(10);
+      const pets = generatePetsMock(5);
       const petsDb = await this.petDao.saveMany(pets);
       return petsDb;
     } catch (error) {
       console.error("Error in createMocks:", error);
-      throw new Error("Error creating mock pets"); // Lanza un error que se puede manejar en el controlador
+      throw new Error("Error creating mock pets");
     }
   }
 }

@@ -1,0 +1,94 @@
+paths:
+  /api/adoptions:
+    get:
+      summary: Get adoptions
+      description: Retrieves a list of adoptions with adopter and pet information.
+      tags:
+        - Adoptions
+      responses:
+        "200":
+          description: List of adoptions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Adoption"
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The user id (ObjectId as string)
+        first_name:
+          type: string
+          description: The user first name
+        last_name:
+          type: string
+          description: The user last name
+        email:
+          type: string
+          description: The user email
+        role:
+          type: string
+          description: The user role
+      example:
+        _id: "5f9c5b9c9c5b9c9c5b9c9c5b"
+        first_name: "John"
+        last_name: "Doe"
+        email: "johndoe@example.com"
+        role: "user"
+
+    Pet:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The pet id (ObjectId as string)
+        name:
+          type: string
+          description: The pet name
+        specie:
+          type: string
+          description: The pet species
+        birthDate:
+          type: string
+          format: date
+          description: The pet's birth date
+      example:
+        _id: "643cd0b791f4b3e9c8d5f8d1"
+        name: "Firulais"
+        specie: "Dog"
+        birthDate: "2020-05-15"
+
+    Adoption:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The adoption id (ObjectId as string)
+        adopter:
+          $ref: "#/components/schemas/User"
+        pet:
+          $ref: "#/components/schemas/Pet"
+        adoptionDate:
+          type: string
+          format: date-time
+          description: Date of the adoption
+      example:
+        _id: "643cd0b791f4b3e9c8d5f8d2"
+        adopter:
+          _id: "5f9c5b9c9c5b9c9c5b9c9c5b"
+          first_name: "John"
+          last_name: "Doe"
+          email: "johndoe@example.com"
+          role: "user"
+        pet:
+          _id: "643cd0b791f4b3e9c8d5f8d1"
+          name: "Firulais"
+          specie: "Dog"
+          birthDate: "2020-05-15"
+        adoptionDate: "2024-10-25T10:30:00Z"

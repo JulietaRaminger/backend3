@@ -1,0 +1,35 @@
+components:
+  schemas:
+    Pet:
+      type: string
+      properties:
+        _id:
+          type: string
+          description: The pet id (ObjectId as string)
+        name:
+          type: string
+          description: The pet name
+        specie:
+          type: string
+          description: The pet species
+        owner:
+          type: string
+          description: ID of the adopter (ObjectId as string)
+        birthDate:
+          type: string
+          format: date
+          description: The pet birth date
+        adopted:
+          type: boolean
+          description: Indicates if the pet has been adopted
+        image:
+          type: string
+          description: URL of the pet's image
+      example:
+        _id: "1234567890"
+        name: "Luna"
+        specie: "Dog"
+        owner: "1234567890"
+        birthDate: "2000-12-30"
+        adopted: false
+        image: "https://i.pinimg.com/736x/3c/7f/2a/3c7f2a6d1e9d5b3d8e9f1a9b4e7b5e6b5.jpg"

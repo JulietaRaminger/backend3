@@ -1,6 +1,6 @@
+import mongoose from "mongoose";
 import Users from "../dao/Users.dao.js";
 import { customError } from "../errors/custom.error.js";
-import { generateUsersMock } from "../mocks/user.mock.js";
 
 export class UserServices {
   constructor() {
@@ -19,11 +19,10 @@ export class UserServices {
   }
   async create(data) {
     const user = await this.userDao.save(data);
-    if (!user) throw customError.badRequestError("Failed to create user");
     return user;
   }
 
-  async crateMany(data) {
+  async createMany(data) {
     const users = await this.userDao.saveMany(data);
 
     return users;
@@ -35,23 +34,29 @@ export class UserServices {
     return user;
   }
   async remove(id) {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw customError.badRequestError(`Invalid ObjectId: ${id}`);
+    try {
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw customError.badRequestError(`Invalid ObjectId: ${id}`);
+      }
+      const user = await this.userDao.getBy(id);
+      if (!user) {
+        throw customError.notFoundError(`User id ${id} not found`);
+      }
+      await this.userDao.delete(id);
+      return "User Deleted";
+    } catch (error) {
+      console.error("Error in remove method:", error);
+      throw error;
     }
-    const user = await this.userDao.getBy(id);
-    if (!user) {
-      throw customError.notFoundError(`User id ${id} not found`);
-    }
-    await this.userDao.delete(id);
-    return "User Deleted";
   }
 
-  async createMocks() {
-    const users = generateUsersMock(10);
-    const usersDb = await this.userDao.saveMany(users);
-    if (!usersDb)
-      throw customError.badRequestError("Failed to create user mocks");
-
-    return usersDb;
-  }
+  createUserMock = async (req, res) => {
+    try {
+      const users = await this.userServices.createMocks();
+      res.status(201).json({ status: "success", users });
+    } catch (error) {
+      console.error("Error creating mock users:", error);
+      res.status(500).json({ status: "error", message: error.message });
+    }
+  };
 }
