@@ -1,5 +1,5 @@
 # Definimos una imagen base de node y su versión para nuestro contenedor
-FROM node:23
+FROM node
 
 # Definimos el directorio de trabajo dentro del contenedor
 WORKDIR /app
