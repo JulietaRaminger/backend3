@@ -38,17 +38,16 @@ export class PetsController {
     const petUpdateBody = req.body;
     const petId = req.params.pid;
     const result = await this.petsServices.update(petId, petUpdateBody);
-    res.send({ status: "success", message: "pet updated" });
+    res.send({ status: "success", payload: result });
   };
 
   deletePet = async (req, res) => {
     try {
       const petId = req.params.pid;
       const result = await this.petsServices.delete(petId);
-      res.send({ status: "success", message: result });
+      res.send({ status: "success", message: "Pet deleted" });
     } catch (error) {
-      console.error("Error deleting pet:", error);
-      res.status(500).json({ message: error.message });
+      next(error);
     }
   };
 

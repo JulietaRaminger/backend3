@@ -1,6 +1,5 @@
-import { customError } from "../errors/custom.error.js";
 import { UserServices } from "../services/user.services.js";
-
+import User from "../dao/models/User.js";
 export class UserControllers {
   constructor() {
     this.userServices = new UserServices();
@@ -45,19 +44,26 @@ export class UserControllers {
 
   updateUser = async (req, res) => {
     try {
-      const updateBody = req.body;
-      const userId = req.params.uid;
-      const user = await this.userServices.getById(userId);
-      if (!user)
+      const { uid } = req.params; // El id del usuario es pasado como parámetro
+      const userData = req.body; // Los datos del usuario que se actualizarán
+
+      // Intentamos actualizar el usuario
+      const updatedUser = await User.findByIdAndUpdate(uid, userData, {
+        new: true,
+      });
+
+      if (!updatedUser) {
         return res
           .status(404)
-          .send({ status: "error", message: "User not found" });
-      const result = await this.userServices.update(userId, updateBody);
-      res.send({ status: "success", message: "User updated" });
+          .json({ status: "error", message: "User not found" });
+      }
+
+      return res.status(200).json({ status: "success", payload: updatedUser });
     } catch (error) {
-      res
+      console.error("Error updating user:", error);
+      return res
         .status(500)
-        .send({ status: "error", message: "Error updating user", error });
+        .json({ status: "error", message: "Internal Server Error" });
     }
   };
 
@@ -72,13 +78,11 @@ export class UserControllers {
       res.send({ status: "success", message: "User deleted" });
     } catch (error) {
       console.error("Error deleting user:", error);
-      res
-        .status(500)
-        .send({
-          status: "error",
-          message: "Error deleting user",
-          error: error.message,
-        });
+      res.status(500).send({
+        status: "error",
+        message: "Error deleting user",
+        error: error.message,
+      });
     }
   };
 }

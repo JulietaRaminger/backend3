@@ -2,68 +2,60 @@ import Users from "../../src/dao/Users.dao.js";
 import mongoose from "mongoose";
 import { expect } from "chai";
 
-mongoose.connect(
-  "mongodb+srv://julietaraminger:ImIimWsRYLs3oThf@cluster0.uwq4ups.mongodb.net/Adoptame"
-);
+mongoose.connect("mongodb://localhost:27017/clase-9");
 
 // Describir nuestro test
-describe("Test UserDAO", function () {
-  //Tiempo de espera 5000 ms
-  this.timeout(5000);
-
-  const UserDao = new Users();
-
+describe("Test UserDao", () => {
+  const userDao = new Users();
   let userTest;
 
-  // Metodo que se ejecuta antes de todos los tests
+  // Método que se ejecuta antes de todos los tests
   before(() => {
     console.log("Inicio de todos los tests");
   });
 
-  // Metodo que se ejecuta antes de cada tests
-
+  // Método que se ejecuta antes de cada test
   beforeEach(() => {
-    console.log("Inicio de cada test");
+    console.log("Se ejecuta un test individual");
   });
 
   // Test individual
-  it("Debería retornar un array con todos los usuarios", async () => {
-    const users = await UserDao.get();
+  it("Debe retornar todos los usuarios", async () => {
+    const users = await userDao.get();
     expect(users).to.be.an("array");
     expect(users).to.be.not.an("object");
   });
 
-  it("Debería crear un nuevo usuario", async () => {
+  it("Debe crear y retornar un usuario", async () => {
     const newUser = {
       first_name: "Pepe",
       last_name: "Perez",
-      email: "ahadad28@example.com",
-      password: "123456",
-      age: 25,
-      birthDate: "2000-01-01",
+      email: "pp10@gamil.com",
+      password: "123",
+      age: 30,
+      birthDate: new Date(),
     };
 
-    const createdUser = await UserDao.save(newUser);
-    userTest = createdUser;
-    //afirmacion
-    expect(createdUser).to.be.an("object");
-    expect(createdUser).to.have.property("_id");
-    expect(createdUser.first_name).to.be.equal(newUser.first_name);
-    expect(createdUser.last_name).to.be.equal(newUser.last_name);
-    expect(createdUser.email).to.be.equal(newUser.email);
-    expect(createdUser.password).to.be.equal(newUser.password);
-    expect(createdUser.role).to.be.equal("user");
+    const user = await userDao.save(newUser);
+    userTest = user;
+    // Afirmación
+    expect(user).to.be.an("object");
+    expect(user).to.have.property("_id");
+    expect(user.first_name).to.be.equal(newUser.first_name);
+    expect(user.last_name).to.be.equal(newUser.last_name);
+    expect(user.email).to.be.equal(newUser.email);
+    expect(user.password).to.be.equal(newUser.password);
+    expect(user.role).to.be.equal("user");
 
-    //negación
-
-    expect(createdUser).to.not.have.property("age");
-    expect(createdUser).to.not.have.property("birthDate");
-    expect(createdUser).to.not.null;
-    expect(createdUser).to.not.be.an("array");
+    // Negación
+    expect(user).to.not.have.property("age");
+    expect(user).to.not.have.property("birthDate");
+    expect(user).to.not.be.null;
+    expect(user).to.not.be.an("array");
   });
 
-  it("Debería retornar un usuario por id", async () => {
-    const user = await UserDao.getById(userTest._id);
+  it("Debe retornar un usuario por su id", async () => {
+    const user = await userDao.getById(userTest._id);
     expect(user).to.be.an("object");
     expect(user).to.have.property("_id");
     expect(user.first_name).to.be.equal(userTest.first_name);
@@ -72,34 +64,35 @@ describe("Test UserDAO", function () {
     expect(user.password).to.be.equal(userTest.password);
   });
 
-  it("Debería actualizar un usuario por id", async () => {
-    const updatedUser = {
-      first_name: "George",
-      password: "54321",
+  it("Debe actualizar un usuario", async () => {
+    const updateData = {
+      first_name: "Juan",
+      password: "321",
     };
 
-    const user = await UserDao.update(userTest._id, updatedUser);
+    const user = await userDao.update(userTest._id, updateData);
     expect(user).to.be.an("object");
     expect(user).to.have.property("_id");
-    expect(user.first_name).to.be.equal("George");
+    expect(user.first_name).to.be.equal("Juan");
     expect(user.last_name).to.be.equal(userTest.last_name);
     expect(user.email).to.be.equal(userTest.email);
-    expect(user.password).to.be.equal("54321");
+    expect(user.password).to.be.equal("321");
   });
 
-  it("Debería borrar un usuario por id", async () => {
-    await UserDao.delete(userTest._id);
-    const user = await UserDao.getById(userTest._id);
+  it("Debe eliminar el usuario", async () => {
+    await userDao.delete(userTest._id);
+    const user = await userDao.getById(userTest._id);
     expect(user).to.be.null;
   });
 
-  // Metodo que se ejecuta despues de cada tests
+  // Método que se ejecuta al finaliza cada test
   afterEach(() => {
-    console.log("Final de cada test");
+    console.log("Test individual finalizado");
   });
-  // Metodo que se ejecuta despues de todos los tests
-  after(() => {
-    console.log("Final de todos los tests");
+
+  // Método que se ejecuta al finalizar todos los test
+  after(async () => {
+    console.log("Tests finalizados");
     mongoose.disconnect();
   });
 });

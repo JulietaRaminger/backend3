@@ -17,6 +17,10 @@ export class UserServices {
     if (!user) throw customError.notFoundError(`User id ${id} not found`);
     return user;
   }
+
+  async getByEmail(email) {
+    return await this.userDao.getByEmail(email);
+  }
   async create(data) {
     const user = await this.userDao.save(data);
     return user;
@@ -38,7 +42,7 @@ export class UserServices {
       if (!mongoose.Types.ObjectId.isValid(id)) {
         throw customError.badRequestError(`Invalid ObjectId: ${id}`);
       }
-      const user = await this.userDao.getBy(id);
+      const user = await this.userDao.get(id);
       if (!user) {
         throw customError.notFoundError(`User id ${id} not found`);
       }
