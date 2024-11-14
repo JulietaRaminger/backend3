@@ -14,6 +14,5 @@ export const generateUsersMock = async (amount) => {
     };
     users.push(user);
   }
-
   return users;
 };

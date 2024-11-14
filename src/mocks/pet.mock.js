@@ -4,7 +4,7 @@ export const generatePetsMock = (amount) => {
   const pets = [];
   for (let i = 0; i < amount; i++) {
     const pet = {
-      name: faker.name.firstName(),
+      name: faker.person.firstName(),
       specie: faker.animal.type(),
       adopted: false,
       birthDate: faker.date.past(),
