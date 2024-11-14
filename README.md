@@ -32,6 +32,8 @@ Este proyecto es una API RESTful que permite gestionar usuarios y adopciones de 
 
 ## Docker
 
+-- https://hub.docker.com/r/julietaraminger/adoption/tags
+
 Este proyecto está Dockerizado. Para construir la imagen de Docker, ejecuta:
 docker build -t adoption .
 
