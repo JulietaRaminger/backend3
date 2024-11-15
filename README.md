@@ -32,6 +32,8 @@ Este proyecto es una API RESTful que permite gestionar usuarios y adopciones de 
 
 ## Docker
 
+-- https://hub.docker.com/r/julietaraminger/adoption/tags
+
 Este proyecto está Dockerizado. Para construir la imagen de Docker, ejecuta:
 docker build -t adoption .
 
@@ -40,7 +42,7 @@ docker run --name app1 -p 3000:8080 adoption
 
 Subida a Docker Hub
 La imagen de Docker del proyecto se encuentra disponible en Docker Hub. Puedes obtenerla e instalarla con el siguiente comando:
-docker pull julietaraminger/adoption:1.0.0
+-- docker pull julietaraminger/adoption:1.0.0
 
 
 Instalación

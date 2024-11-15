@@ -4,13 +4,13 @@ import supertest from "supertest";
 const request = supertest("http://localhost:8080/api/sessions");
 const userRequest = supertest("http://localhost:8080/api/users");
 
-describe("Test Integrales de Sessions", () => {
+describe("Test Integrales de sessions", () => {
   let userTest;
   it("[POST] /api/sessions/register - Debe registrar un usuario", async () => {
     const user = {
       first_name: "User",
       last_name: "Test",
-      email: "usertest1@gmail.com",
+      email: "usertest10@gmail.com",
       password: "123",
     };
 
@@ -28,7 +28,7 @@ describe("Test Integrales de Sessions", () => {
 
   it("[POST] /api/sessions/login - Debe loguear un usuario", async () => {
     const data = {
-      email: "usertest1@gmail.com",
+      email: "usertest10@gmail.com",
       password: "123",
     };
 
@@ -42,4 +42,4 @@ describe("Test Integrales de Sessions", () => {
   after(async () => {
     await userRequest.delete(`/${userTest._id}`);
   });
-});
+ });
