@@ -89,7 +89,6 @@ describe("Test de integración Adoptions", () => {
     expect(status).to.be.equal(200);
     expect(body.status).to.be.equal("success");
     expect(Array.isArray(body.adoptions)).to.be.true;
-    
   });
 
 
